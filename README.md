@@ -36,25 +36,29 @@ just to run horribly optimized code, well how about we cut out the middleman and
 into the CPU itself?
 
 ### What are the abstractions and features in D-Zeal? 
-(+) 64-bit long instructions that has each bitfield be either 8, 16, or 32-bits long.
-(+) 256 general purpose registers, only one of which as of now has a special purpose, 
+* 64-bit long instructions that has each bitfield be either 8, 16, or 32-bits long.
+*  256 general purpose registers, only one of which as of now has a special purpose, 
 and that's the "0" register which always holds the value of zero.
-(+) Since immediate fields are always 32-bits long, loading in values, branching, and jumping is so easy.
+* Since immediate fields are always 32-bits long, loading in values, branching, and jumping is so easy.
 No more restrictive sizes like 12-bits like in RISC-V. You can load a 64-bit immediate in just two instructions
 and jump to a 64-bit address similarly in just two instructions.
-(+) Opcodes being 16-bit means there's no need for a field like funct3 or funct7. 
+* Opcodes being 16-bit means there's no need for a field like funct3 or funct7. 
 65,536 opcodes ought to be enough for anyone. If it isn't? I'm judging you.
-(+) Like RISC-V there are 6 main categories:
-R-type (Register to Register), I-type (Immediate to Register), S-type (Storing), B-type (Branch),
-U-type ("upper immediates"), and J-type (Unconditional Jumps)
+* Like RISC-V there are 6 main categories:
+  * R-type (Register to Register)
+  * I-type (Immediate to Register)
+  * S-type (Storing stuff to registers)
+  * B-type (Branch instructions),
+  * U-type (loading "upper immediates")
+  * J-type (Unconditional Jumps)
 R-type opcodes start with "A" like A000 is for an R-type add. I-type starts with "B" (Add Immediate is B000), and so on.
 People who wish to extend the ISA with more categories can use 0 through 9.
-(+) Technically there is a funct4 field being used but it exists as the last digit of the opcode. 
+* Technically there is a funct4 field being used but it exists as the last digit of the opcode. 
 A003 for example, the 3 means it's a subtraction. But that digit only gets used like that for basic ALU operations.
 If there was an instruction like A086 to represent something, that 6 wouldn't be used to signal the ALU probably.
-(+) The Machinecode is readable enough that I did not need to write an assembler or translator. I just looked at the
+* The Machinecode is readable enough that I did not need to write an assembler or translator. I just looked at the
 hexadecimal and wrote the testprogram you see in "test_imemory.hex"
-(+) Since every instruction is 64-bits long and every instruction can be identified by its category by looking at the
+* Since every instruction is 64-bits long and every instruction can be identified by its category by looking at the
 first digit, and every opcode itself is clear in what it does, if anyone ever takes this ISA seriously, it should 
 hopefully make reverse engineering programs written for it much easier if someone releases a binary for it and 
 then loses the source code. They can just open up a hex editor and read it directly. Every 16 hex digits is one instruction
