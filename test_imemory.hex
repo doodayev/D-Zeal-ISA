@@ -1,0 +1,104 @@
+B014120000000010 //LW TEST START         :0 lw R18 0x10(R0)  Register 18 loads from Register 0 plus 0x10
+C014001200000018 //SW TEST START         :8 sword R18 0x18(R0)  Register 18 stores to Register 0 plus 0x18
+B014130000000020 //ADD TEST START        :10 lw R19 0x20(R0) Register 19 stores to Reg0 plus 0x20
+A000141312000000 //                      :18 add R20, R19 R18
+A001151214000000 //AND TEST START        :20 and R21, R18 R20
+B014050000000030 //OR TEST START         :28 lw R5, 0x30(R0)
+B014060000000038 //                      :30 lw R6, 0x38(R0)
+A002070506000000 //                      :38 or R7, R5 R6
+D003150700000018 //BEQ TEST START        :40 beq R18, R7, 0xC (shouldn't branch)
+B014160000000010 //                      :48 lw R22 0x8(R0)
+D003121600000020 //                      :50 beq R18 R22 0x20
+0000000000000000 //NOP                   :58
+0000000000000000 //NOP                   :60
+D003000000000018 //                      :68 beq R0 R0 0x18
+B014160000000000 //                      :70 lw R22 R0 0x0
+D0031414FFFFFFF0 //                      :78 beq R22 R22 -0x10
+0000000000000000 // NOP                  :80 nop
+E010010000000018 // JAL TEST START       :88 jal R1 0x18
+0000000000000000 // NOP                  :90 nop
+E010010000000018 //                      :98 jal R1 0x18
+E0100100FFFFFFF8 //                      :A0 jal R1 -0x08
+0000000000000000 // NOP                  :A8 nop
+B014070000000018 //                      :B0 lw R7 0x18
+B0001A070000007F // ADDI TEST START      :B8 addi R26, R7 0x7F
+B0001906FFFF9AFE //                      :C0 addi R25, R6 -0x6502
+F010050068696768 // AUIPC TEST START     :C8 auipc R5 0x68696768
+F011050062796521 // LUI                  :D0 lui R5 0x62796521
+B0041713FFFFFFFF // SLTI TEST START      :D8 slti R23 R19 0xFFFFFFFF
+B004171700000001 //                      :E0 slti R23 R23 0x1
+B0051613FFFFFFFF // SLTIU TEST START     :E8 sltiu R22 R19 0xFFFFFFFF
+B005161300000001 //                      :F0 sltiu R22 R19 0x1
+B006121300068000 // XORI TEST START      :F8 xori R18 R19 0x68000
+B006131200000000 //                      :100 xori R19 R18 0x0000
+B000A0000000F00F //                      :108 addi R160 R0 0xF00F
+B001A0A0F33D533D // ANDI TEST            :110 andi R160 R160 0xF33D533D
+B000A10000000235 //                      :118 addi R161 R0 0x235
+B002A1A100002500 // ORI TEST             :120 ori R161 R161 0x2500
+B000A2000C000000 // SLLI TEST            :128 addi R162 R0 0x0C000000
+B007A2A200000008 //                      :130 slli R162 R0 0x8
+B000A30000515000 // SRLI TEST            :138 addi R163 R0 0x515000
+B008A3A30000000C //                      :140 srli R163 R163 0xC
+B000A400FF789777 // SRAI TEST            :148 addi R164 R0 0xFF789777
+B009A4A400000010 //                      :150 srai R164 R164 0x10
+B000A60000001991 // SUB TEST             :158 addi R166 R0 0x1991
+B000A50000001453 //                      :160 addi R165 R0 0x1453
+A003A7A5A6000000 //                      :168 sub R167, R166 R165
+A004A819A5000000 // SLT TEST             :170 slt R168, R25 R165    (R168 = 1, because 0x1453 > -0x6502)
+A007A9A8A7000000 // SLL TEST             :178 sll R169, R168 R167 (R169 = 53E << 1 = A7C)
+A005AAA6A5000000 // SLTU TEST            :180 sltu R170, R166 R165 (R170 = 1, because 0x1991 > 0x1453)
+A008A9AAA9000000 // SRL TEST             :188 srl R169, 169 170 (R168 = A7C >> 1 = 53E)
+B000AAAAD00DFEED // SRA TEST             :190 addi R170, R170 0xD00DFEEE
+B000ABAB00000011 //                      :198 addi R171, R171 0x11
+A009ACABAA000000 //                      :1A0 sra  R172, R171 R170 (R172 = 0xD00DFEEE >> 0x11 = 0x6806)
+A006ADAAAA000000 // XOR TEST             :1A8 xor R173, R170 R170 (R173 = 0)
+D004A6A500000010 // BLT TEST             :1B0 blt R166 R165 0x10 (not taken since 1991>1453)
+D004A5A600000010 //                      :1B8 blt R165 R166, 0x10 (taken since 1453<1991)
+A00019A113000000 //                      :1C0 add R25, R161 R22 (this shouldn't even be taken)
+B000770000000077 //                      :1C8 add R119, R0 0x77 (This should be executed)
+A000787700000000 // BNE TEST             :1D0 add R120, R119, R0
+D00A777800000010 //                      :1D8 bne R119 R120, 0x10
+D00A77A600000020 //                      :1E0 bne R119 R166, 0x20
+A000121212000000 //                      :1E8 add R18, R18 R18
+A000121212000000 //                      :1F0 add R18, R18 R18
+A000131206000000 //                      :1F8 add R19, R18 R6
+B000777700000001 //                      :200 addi R119, R119 0x2
+D00BA6A500000018 // BGT TEST             :208 bgt R166 R165 0x18
+A003121212000000 //                      :210 sub R18, R18 R18
+A003121212000000 //                      :218 sub R18, R18 R18
+D00BA5A600000010 //                      :220 bgt R165 R166 0x10
+A000050000000000 //                      :228 add R5, R5 R0
+B000050500000005 //                      :230 addi R5, R5 0x5
+A000070500000000 // BGTU  TEST           :238 add R7, R5 R0
+B000070700000002 //                      :240 addi R7, R7 0x2
+D00C070500000018 //                      :248 bgtu R7 R5, 0x18
+A003070705000000 //                      :250 sub R7, R5 R7
+A003AC07AA000000 //                      :258 sub R172, R7 R170
+A000080705000000 //                      :260 add R8, R5 R7
+D00C000500000010 //                      :268 bgtu R0 R5, 0x10
+D005000500000010 // BLTU TEST            :270 bltu R0 R5, 0x10
+A000090805000000 //                      :278 add R8, R8 R5
+A000090807000000 //                      :280 add R9, R8 R7
+D0050500FFFFFFF8 //                      :288 bltu R05 R0, -0x8
+B0000C0000000002 //                      :290 addi R0 0x2, R12
+A0000D0000000000 //                      :298 add R13, R0 R0
+B0000D0D000002B8 // JALR TEST            :2A0 addi R13, R13 0x2B8
+BE000E0D00000000 //                      :2A8 jalr R14, R13, 0x0
+B0000C0C00000005 //                      :2B0 addi R12, R12 0x5
+B0000C0C00000007 //                      :2B8 addi R12, R12 0x7
+B0000C0C00000003 //                      :2C0 addi R12, R12 0x3
+C01401AA00000045 //                      :2C8 sword R2, R170 0x45 (NOT taken, misaligned)
+C01002AA0000000A //                      :2D0 sbyte R1, R170 0x9
+B000A000033D533D //                      :2D8 addi R160, AA 0x033D533D
+C01103A000000058 //                      :2E0 s2pac R3, R160 0x58
+C01104A000000066 //                      :2E8 s2pac R4, R160 0x66
+C01105A000000063 //                      :2F0 s2pac R5, R160 0x63 (NOT taken, misaligned)
+B000C1C147616E67 //                      :2F8 addi R193, R193 0x47616E67
+C01206C10000006C //                      :300 StoreChud R6, R193 0x6C
+B010C2000000002A //                      :308 LoadSquad R194, R0 0x2A
+B019C20000000028 //                      :308 LoadSquad R194, R0 0x28
+B011C30000000028 //                      :310 LoadBrigade R195, R0 0xC
+B012C40000000044 //                      :318 LoadChud R196, R0 0x44
+
+0000000000000000
+//(Filled the rest with NOPs...)
